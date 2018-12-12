@@ -3,8 +3,8 @@ pipeline {
        label ubuntu
     }
     tools {
-        maven 'Maven 3.6.0'
-        jdk 'jdk8'
+        maven 'Maven3'
+        jdk 'JDK8'
     }
     stages {
         stage ('Initialize') {
@@ -18,7 +18,10 @@ pipeline {
 
         stage ('Build') {
             steps {
-                sh 'mvn test'
+                sh '''
+                mvn --version
+                mvn test
+                '''
             }
         }
     }

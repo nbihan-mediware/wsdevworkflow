@@ -18,10 +18,7 @@ pipeline {
 
         stage ('Build') {
             steps {
-                sh '''
-                mvn --version
-                mvn test
-                '''
+                sh 'mvn sonar:sonar -Dsonar.host.url=https://hhh-aks.eastus.cloudapp.azure.com'
             }
         }
     }

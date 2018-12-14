@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WorkflowApplication {
 
     public static void main(String[] args) {
-        String SuperHorrible = "";
+        //Bad variable name
+        String SuperHorrible="";
+        //System out should be a critical
+        System.out.println(SuperHorrible);
         SpringApplication.run(WorkflowApplication.class, args);
     }
 }

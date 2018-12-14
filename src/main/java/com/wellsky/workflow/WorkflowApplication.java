@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WorkflowApplication {
 
     public static void main(String[] args) {
+        String SuperHorrible = "";
         SpringApplication.run(WorkflowApplication.class, args);
     }
 }

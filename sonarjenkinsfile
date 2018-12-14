@@ -21,6 +21,7 @@ pipeline {
         stage ('Analyze') {
             steps {
                         withSonarQubeEnv('HHH Sonarqube') {
+                                sh "env"
                                 sh "mvn sonar:sonar " +
                                         "-Dsonar.analysis.mode=preview " +
                                         "-Dsonar.github.pullRequest=$GIT_BRANCH " +

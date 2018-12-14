@@ -7,8 +7,7 @@ pipeline {
         jdk 'JDK8'
     }
     environment {
-         githubToken = ""
-         repoSlug = ""
+         repoSlug = "nbihan-mediware/wsdevworkflow"
     }
     stages {
         stage ('Initialize') {
@@ -22,10 +21,6 @@ pipeline {
         }
         stage ('Analyze') {
             steps {
-                    
-                    script {
-                       repoSlug=getRepoSlug()
-                    }
                     withSonarQubeEnv('HHH Sonarqube') {
                        sh 'mvn sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/'
                     }

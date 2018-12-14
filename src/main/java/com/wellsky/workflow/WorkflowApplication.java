@@ -11,6 +11,7 @@ public class WorkflowApplication {
     public static void main(String[] args) {
         //Bad variable name
         String SuperHorrible_VarName="";
+        String BAD="";
         //System out should be a critical
         System.out.println(SuperHorrible_VarName);
         SpringApplication.run(WorkflowApplication.class, args);

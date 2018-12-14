@@ -21,15 +21,11 @@ pipeline {
         }
         stage ('Analyze') {
             steps {
-                    sh 'mvn org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=true -Pcoverage-per-test'
                     withCredentials([[$class: 'StringBinding', credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN']]) {
                         withSonarQubeEnv('HHH Sonarqube') {
                             sh 'mvn sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/ -Dsonar.login=${SONAR_TOKEN}'
                         }
                     }
-
-
-
             }
         }
     }

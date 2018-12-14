@@ -22,7 +22,7 @@ pipeline {
         stage ('Analyze') {
             steps {
                     withCredentials([[$class: 'StringBinding', credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN'],
-                                      [$class: 'StringBinding', credentialsId: 'GITHUB_ACCESS_TOKEN', variable: 'GITHUB_ACCESS_TOKEN']]]) {
+                                      [$class: 'StringBinding', credentialsId: 'GITHUB_ACCESS_TOKEN', variable: 'GITHUB_ACCESS_TOKEN']]) {
                         withSonarQubeEnv('HHH Sonarqube') {
                             sh 'mvn sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/ -Dsonar.github.oauth=${GITHUB_ACCESS_TOKEN} -Dsonar.login=${SONAR_TOKEN}'
                         }

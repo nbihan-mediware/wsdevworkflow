@@ -12,7 +12,8 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    echo "PR ID is $PULL_REQUEST_ID"
+                    echo "PR ID is ${PULL_REQUEST_ID}"
+                    echo "access token ${SONARQUBE_ACCESS_TOKEN}"
                 '''
             }
         }

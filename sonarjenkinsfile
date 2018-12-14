@@ -14,16 +14,16 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    echo env.CHANGE_ID
+                    echo $GIT_BRANCH
                 '''
             }
         }
         stage ('Analyze') {
             steps {
-                        withSonarQubeEnv('Sonar') {
+                        withSonarQubeEnv('HHH Sonarqube') {
                                 sh "mvn sonar:sonar " +
                                         "-Dsonar.analysis.mode=preview " +
-                                        "-Dsonar.github.pullRequest=env.CHANGE_ID " +
+                                        "-Dsonar.github.pullRequest=$GIT_BRANCH " +
                                         "-Dsonar.host.url=https://hhh-aks.eastus.cloudapp.azure.com"
                         }
 

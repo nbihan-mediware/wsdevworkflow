@@ -14,21 +14,19 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    echo "PR ID is ${PULL_REQUEST}"
+                    echo env.CHANGE_ID
                 '''
             }
         }
         stage ('Analyze') {
             steps {
-                    withCredentials([[$class: 'StringBinding', credentialsId: '***', variable: 'GITHUB_ACCESS_TOKEN']]) {
                         withSonarQubeEnv('Sonar') {
                                 sh "mvn sonar:sonar " +
                                         "-Dsonar.analysis.mode=preview " +
-                                        "-Dsonar.github.pullRequest=${PULL_REQUEST} " +
-                                        "-Dsonar.github.oauth=${GITHUB_ACCESS_TOKEN} " +
+                                        "-Dsonar.github.pullRequest=env.CHANGE_ID " +
                                         "-Dsonar.host.url=https://hhh-aks.eastus.cloudapp.azure.com"
                         }
-                    }
+
             }
         }
     }

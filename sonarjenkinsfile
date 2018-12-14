@@ -6,6 +6,10 @@ pipeline {
         maven 'Maven3'
         jdk 'JDK8'
     }
+    environment {
+         githubToken = ""
+         repoSlug = ""
+    }
     stages {
         stage ('Initialize') {
             steps {
@@ -20,8 +24,8 @@ pipeline {
             steps {
                     sh 'mvn org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=true -Pcoverage-per-test'
                     withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN']]) {
-                        def githubToken=env.GITHUB_TOKEN
-                        def repoSlug=getRepoSlug()
+                        githubToken=env.GITHUB_TOKEN
+                        repoSlug=getRepoSlug()
                         withSonarQubeEnv('HHH Sonarqube') {
                             sh 'mvn -Dsonar.analysis.mode=preview -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.oauth=${githubToken} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/ sonar:sonar'
                         }

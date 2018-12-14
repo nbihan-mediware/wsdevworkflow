@@ -20,14 +20,17 @@ pipeline {
         }
         stage ('Analyze') {
             steps {
+                    prNo = (env.BRANCH_NAME=~/^PR-(\d+)$/)[0][1]
+                    mvn "org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=true -Pcoverage-per-test"
+                    withCredentials([[$class: 'StringBinding', credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN']]) {
+                        githubToken=env.GITHUB_TOKEN
+                        repoSlug=getRepoSlug()
                         withSonarQubeEnv('HHH Sonarqube') {
-                                sh "env"
-                                sh "mvn sonar:sonar " +
-                                        "-Dsonar.analysis.mode=preview " +
-                                        "-Dsonar.github.pullRequest=$GIT_BRANCH " +
-                                        "-Dsonar.host.url=$SONAR_HOST_URL "+
-                                        "-Dsonar.login=$SONAR_AUTH_TOKEN"
+                            mvn "-Dsonar.analysis.mode=preview -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.github.pullRequest=${prNo} -Dsonar.github.oauth=${githubToken} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/ sonar:sonar"
                         }
+                    }
+
+
 
             }
         }

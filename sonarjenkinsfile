@@ -24,8 +24,8 @@ pipeline {
                                 sh "mvn sonar:sonar " +
                                         "-Dsonar.analysis.mode=preview " +
                                         "-Dsonar.github.pullRequest=$GIT_BRANCH " +
-                                        "-Dsonar.host.url=https://hhh-aks.eastus.cloudapp.azure.com "+
-                                        "-Dsonar.login=$SONARQUBE_ACCESS_TOKEN"
+                                        "-Dsonar.host.url=$SONAR_HOST_URL "+
+                                        "-Dsonar.login=$SONAR_AUTH_TOKEN"
                         }
 
             }

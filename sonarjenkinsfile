@@ -10,7 +10,7 @@ pipeline {
         repoSlug = "nbihan-mediware/wsdevworkflow"
     }
     stages {
-        stage ('Initialize') {
+        stage ('Build') {
             steps {
                 sh '''
                     echo "PATH = ${PATH}"

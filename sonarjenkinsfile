@@ -1,13 +1,16 @@
 pipeline {
     agent {
-       label ubuntu
+       label 'ubuntu'
     }
     tools {
-        maven 'Maven 3.6.0'
-        jdk 'jdk8'
+        maven 'Maven3'
+        jdk 'JDK8'
+    }
+    environment {
+        repoSlug = "nbihan-mediware/wsdevworkflow"
     }
     stages {
-        stage ('Initialize') {
+        stage ('Build') {
             steps {
                 sh '''
                     echo "PATH = ${PATH}"
@@ -15,10 +18,16 @@ pipeline {
                 '''
             }
         }
-
-        stage ('Build') {
+        stage ('Analyze') {
             steps {
-                sh 'mvn test'
+                //we have 2 credentials to setup in Jenkins SONAR TOKEN (https://sonarurl/account/security/) and github oauth token (https://github.com/settings/tokens)
+                withCredentials([[$class: 'StringBinding', credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN'],
+                                 [$class: 'StringBinding', credentialsId: 'GITHUB_ACCESS_TOKEN', variable: 'GITHUB_ACCESS_TOKEN']]) {
+                    withSonarQubeEnv('HHH Sonarqube') {
+                        //runs unit tests and a preview analysis of sonarqube that will write comments to github
+                        sh 'mvn test sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/ -Dsonar.github.oauth=${GITHUB_ACCESS_TOKEN} -Dsonar.login=${SONAR_TOKEN}'
+                    }
+                }
             }
         }
     }

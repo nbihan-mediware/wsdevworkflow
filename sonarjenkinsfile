@@ -25,7 +25,7 @@ pipeline {
                                  [$class: 'StringBinding', credentialsId: 'GITHUB_ACCESS_TOKEN', variable: 'GITHUB_ACCESS_TOKEN']]) {
                     withSonarQubeEnv('HHH Sonarqube') {
                         script {
-                            if(${CHANGE_ID}) {
+                            if(env.CHANGE_ID) {
                                 //runs unit tests and a preview analysis of sonarqube that will write comments to github
                                 sh 'mvn test sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/ -Dsonar.github.oauth=${GITHUB_ACCESS_TOKEN} -Dsonar.login=${SONAR_TOKEN}'
                             } else {

@@ -8,7 +8,6 @@ pipeline {
     }
     environment {
         repoSlug = "nbihan-mediware/wsdevworkflow"
-        pr_id= env.CHANGE_ID
     }
     stages {
         stage ('Build') {
@@ -16,7 +15,6 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    echo "Pull Request ID = ${pr_id}"
                 '''
             }
         }
@@ -26,8 +24,10 @@ pipeline {
                 withCredentials([[$class: 'StringBinding', credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN'],
                                  [$class: 'StringBinding', credentialsId: 'GITHUB_ACCESS_TOKEN', variable: 'GITHUB_ACCESS_TOKEN']]) {
                     withSonarQubeEnv('HHH Sonarqube') {
-                        //runs unit tests and a preview analysis of sonarqube that will write comments to github
-                        sh 'mvn test sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.github.pullRequest=${pr_id} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/ -Dsonar.github.oauth=${GITHUB_ACCESS_TOKEN} -Dsonar.login=${SONAR_TOKEN}'
+                        if(CHANGE_ID) {
+                            //runs unit tests and a preview analysis of sonarqube that will write comments to github
+                            sh 'mvn test sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/ -Dsonar.github.oauth=${GITHUB_ACCESS_TOKEN} -Dsonar.login=${SONAR_TOKEN}'
+                        }
                     }
                 }
             }

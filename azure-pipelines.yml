@@ -10,6 +10,25 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+  - task: AzureKeyVault@1
+    inputs:
+      azureSubscription: 'Azure Pipelines Vault'
+      KeyVaultName: 'hhh-azuredevops-vault'
+      SecretsFilter: '*sonar*'
+
+  - task: SonarQubePrepare@4
+    inputs:
+      SonarQube: 'HHH SonarQube'
+      scannerMode: 'CLI'
+      configMode: 'manual'
+      cliProjectKey: 'com.wellsky:workflow'
+      cliProjectName: 'Workflow'
+      cliSources: './src'
+      extraProperties: |
+        sonar.java.binaries=target/classes
+        sonar.github.oauth=$(hhh-sonar-github-token)
+        sonar.analysis.mode=preview
+        sonar.github.endpoint=https://api.github.com/'
   - task: SonarQubePrepare@4
     inputs:
       SonarQube: 'HHH SonarQube'

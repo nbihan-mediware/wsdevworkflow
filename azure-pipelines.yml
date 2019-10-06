@@ -29,7 +29,7 @@ steps:
         sonar.github.oauth=$(hhh-sonar-github-token)
         sonar.analysis.mode=preview
         sonar.github.endpoint=https://api.github.com/'
-        
+
   - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'

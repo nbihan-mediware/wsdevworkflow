@@ -14,7 +14,7 @@ steps:
     inputs:
       azureSubscription: 'Azure Pipelines Vault'
       KeyVaultName: 'hhh-azuredevops-vault'
-      SecretsFilter: '*sonar*'
+      SecretsFilter: '*'
 
   - task: SonarQubePrepare@4
     inputs:

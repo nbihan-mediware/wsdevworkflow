@@ -29,7 +29,7 @@ steps:
         sonar.github.oauth=$(hhh-sonar-github-token)
         sonar.analysis.mode=preview
         sonar.github.endpoint=https://api.github.com/
-        sonar.github.pullRequest=$(System.PullRequest.PullRequestId)
+        sonar.github.pullRequest=$(System.PullRequest.PullRequestNumber)
         sonar.links.scm=https://github.com/nbihan-mediware/wsdevworkflow.git
 
   - task: Maven@3

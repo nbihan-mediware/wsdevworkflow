@@ -28,7 +28,8 @@ steps:
         sonar.java.binaries=target/classes
         sonar.github.oauth=$(hhh-sonar-github-token)
         sonar.analysis.mode=preview
-        sonar.github.endpoint=https://api.github.com/'
+        sonar.github.endpoint=https://api.github.com/
+        sonar.github.pullRequest=$(System.PullRequest.PullRequestId)'
 
   - task: Maven@3
     inputs:

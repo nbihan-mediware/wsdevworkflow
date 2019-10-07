@@ -30,7 +30,7 @@ steps:
         sonar.analysis.mode=preview
         sonar.github.endpoint=https://api.github.com/
         sonar.github.pullRequest=$(System.PullRequest.PullRequestId)
-        sonar.links.scm=https://github.com/mediwareinc/wsdevworkflow.git
+        sonar.links.scm=https://github.com/nbihan-mediware/wsdevworkflow.git
 
   - task: Maven@3
     inputs:

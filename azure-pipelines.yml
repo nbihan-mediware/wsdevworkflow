@@ -10,11 +10,28 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+  - task: AzureKeyVault@1
+    inputs:
+      azureSubscription: 'Azure Pipelines Vault'
+      KeyVaultName: 'hhh-azuredevops-vault'
+      SecretsFilter: '*'
+
   - task: SonarQubePrepare@4
     inputs:
       SonarQube: 'HHH SonarQube'
       scannerMode: 'CLI'
-      configMode: 'file'
+      configMode: 'manual'
+      cliProjectKey: 'com.wellsky:workflow'
+      cliProjectName: 'Workflow'
+      cliSources: './src'
+      extraProperties: |
+        sonar.java.binaries=target/classes
+        sonar.github.oauth=$(hhh-sonar-github-token)
+        sonar.analysis.mode=preview
+        sonar.github.endpoint=https://api.github.com/
+        sonar.github.pullRequest=$(System.PullRequest.PullRequestNumber)
+        sonar.links.scm=https://github.com/nbihan-mediware/wsdevworkflow.git
+
   - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'
